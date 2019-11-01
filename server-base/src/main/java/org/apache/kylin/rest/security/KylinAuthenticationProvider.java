@@ -77,8 +77,8 @@ public class KylinAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
-        byte[] hashKey = hf.hashString(authentication.getName() + authentication.getCredentials()).asBytes();
+        //https://guava.dev/releases/15.0/api/docs/com/google/common/hash/HashFunction.html#hashString(java.lang.CharSequence)
+        byte[] hashKey = hf.hashUnencodedChars(authentication.getName() + authentication.getCredentials()).asBytes();
         String userKey = Arrays.toString(hashKey);
 
         if (userService.isEvictCacheFlag()) {

@@ -102,7 +102,7 @@
         <curator.version>2.12.0</curator.version>
         <curator-test.version>2.12.0</curator-test.version>
         <jsr305.version>3.0.1</jsr305.version>
-        <guava.version>14.0</guava.version>
+        <guava.version>19.0</guava.version>
         <jsch.version>0.1.54</jsch.version>
         <commons-cli.version>1.2</commons-cli.version>
         <commons-lang.version>2.6</commons-lang.version>
@@ -135,7 +135,7 @@
         <commons-dbcp.version>1.4</commons-dbcp.version>
 
         <!-- Utility -->
-        <log4j.version>1.2.17</log4j.version>
+        <log4j.version>2.10.0</log4j.version>
         <slf4j.version>1.7.21</slf4j.version>
         <xerces.version>2.11.0</xerces.version>
         <xalan.version>2.7.2</xalan.version>
@@ -821,17 +821,23 @@
 
             <!-- Logging -->
             <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-1.2-api</artifactId>
                 <version>${log4j.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <!--            <dependency>-->
+<!--                <groupId>org.slf4j</groupId>-->
+<!--                <artifactId>slf4j-log4j12</artifactId>-->
+<!--                <version>${slf4j.version}</version>-->
+<!--                <scope>provided</scope>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
@@ -1080,15 +1086,21 @@
         <!-- the logging dependencies are inherited by all modules for their generality
             log4j and slf4j-log4j12 test scope only for UT/IT use -->
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>slf4j-log4j12</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -1365,8 +1377,8 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <!-- uncomment this on release -->
-                <!--<version>3.4.1</version>-->
+<!--                 uncomment this on release-->
+                <version>3.4.1</version>
             </plugin>
         </plugins>
     </build>

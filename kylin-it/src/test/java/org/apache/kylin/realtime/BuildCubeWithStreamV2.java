@@ -114,7 +114,7 @@ public class BuildCubeWithStreamV2 extends KylinTestBase {
         System.setProperty("kylin.hadoop.conf.dir", confDir);
         if (StringUtils.isEmpty(System.getProperty("hdp.version"))) {
             throw new RuntimeException(
-                    "No hdp.version set; Please set hdp.version in your jvm option, for example: -Dhdp.version=2.4.0.0-169");
+                    "No hdp.version set; Please set hdp.version in your jvm option, for example: -Dhdp.version=3.1.0.0-78");
         }
 
         // use mocked stream data search client

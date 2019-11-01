@@ -31,6 +31,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.kylin.common.util.ByteArray;
 import org.apache.kylin.common.util.Dictionary;
@@ -90,7 +91,7 @@ public class DoggedCubeBuilder2 extends AbstractInMemCubeBuilder {
             ForkJoinPool builderPool = new ForkJoinPool(taskThreadCount, factory, null, true);
             CuboidResultWatcher resultWatcher = new CuboidResultWatcher(builderList, output);
 
-            Stopwatch sw = new Stopwatch();
+            Stopwatch sw = Stopwatch.createUnstarted();
             sw.start();
             logger.info("Dogged Cube Build2 start");
             try {
@@ -113,7 +114,7 @@ public class DoggedCubeBuilder2 extends AbstractInMemCubeBuilder {
                     });
                 }
                 resultWatcher.start();
-                logger.info("Dogged Cube Build2 splits complete, took " + sw.elapsedMillis() + " ms");
+                logger.info("Dogged Cube Build2 splits complete, took " + sw.elapsed(TimeUnit.MILLISECONDS) + " ms");
             } catch (Throwable e) {
                 logger.error("Dogged Cube Build2 error", e);
                 if (e instanceof Error)
@@ -127,7 +128,7 @@ public class DoggedCubeBuilder2 extends AbstractInMemCubeBuilder {
                 closeGirdTables(builderList);
                 sw.stop();
                 builderPool.shutdownNow();
-                logger.info("Dogged Cube Build2 end, totally took " + sw.elapsedMillis() + " ms");
+                logger.info("Dogged Cube Build2 end, totally took " + sw.elapsed(TimeUnit.MILLISECONDS) + " ms");
                 logger.info("Dogged Cube Build2 return");
             }
         }
@@ -274,11 +275,11 @@ public class DoggedCubeBuilder2 extends AbstractInMemCubeBuilder {
 
         @Override
         public void finish(CuboidResult result) {
-            Stopwatch stopwatch = new Stopwatch().start();
+            Stopwatch stopwatch = Stopwatch.createUnstarted().start();
             int nRetries = 0;
             while (!outputQueue.offer(result)) {
                 nRetries++;
-                long sleepTime = stopwatch.elapsedMillis();
+                long sleepTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
                 if (sleepTime > 3600000L) {
                     stopwatch.stop();
                     throw new RuntimeException(

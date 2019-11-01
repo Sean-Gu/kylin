@@ -53,7 +53,7 @@ public class CubePartitionRoundRobinAssigner implements Assigner {
             public Integer apply(ReplicaSet rs) {
                 return rs.getReplicaSetID();
             }
-        }).toImmutableSet();
+        }).toSet();
 
         Map<Integer, Map<String, List<Partition>>> existingRSAssignmentsMap = AssignmentUtil
                 .convertCubeAssign2ReplicaSetAssign(existingAssignments);

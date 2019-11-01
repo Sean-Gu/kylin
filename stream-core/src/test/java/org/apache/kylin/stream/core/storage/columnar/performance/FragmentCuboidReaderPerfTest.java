@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.kylin.common.KylinConfig;
 import org.apache.kylin.common.util.Dictionary;
@@ -109,7 +110,7 @@ public class FragmentCuboidReaderPerfTest extends LocalFileMetadataTestCase {
             fragmentCuboidReaders.add(fragmentCuboidReader);
         }
 
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         int rowNum = 0;
         long scanTime = 0;
@@ -129,7 +130,7 @@ public class FragmentCuboidReaderPerfTest extends LocalFileMetadataTestCase {
             scanTime += System.currentTimeMillis() - scanStartTime;
         }
         sw.stop();
-        long takeTime = sw.elapsedMillis();
+        long takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
         System.out.println(time + " scan finished, total rows:" + rowNum);
         System.out.println(time + " scan took:" + takeTime + ", scan time: " + scanTime + ", rowsPerSec:"
                 + (rowNum / takeTime) * 1000);
@@ -164,7 +165,7 @@ public class FragmentCuboidReaderPerfTest extends LocalFileMetadataTestCase {
                 readRows[i][j] = rand.nextInt((int) fragmentMetaInfo.getNumberOfRows());
             }
         }
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         int rowNum = 0;
 
@@ -174,7 +175,7 @@ public class FragmentCuboidReaderPerfTest extends LocalFileMetadataTestCase {
             }
         }
         sw.stop();
-        long takeTime = sw.elapsedMillis();
+        long takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
         System.out.println(time + " scan finished, total rows:" + rowNum);
         System.out.println(time + " scan took:" + takeTime + ",rowsPerSec:" + (rowNum / takeTime) * 1000);
     }

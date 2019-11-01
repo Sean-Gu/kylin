@@ -180,13 +180,13 @@ public class HttpStreamDataSearchClient implements IStreamDataSearchClient {
 
         try {
             String content = JsonUtil.writeValueAsString(dataRequest);
-            Stopwatch sw = new Stopwatch();
+            Stopwatch sw = Stopwatch.createUnstarted();
             sw.start();
             int connTimeout = cube.getConfig().getStreamingRPCHttpConnTimeout();
             int readTimeout = cube.getConfig().getStreamingRPCHttpReadTimeout();
             String msg = restService.postRequest(url, content, connTimeout, readTimeout);
 
-            logger.info("query-{}: receive response from {} take time:{}", queryId, receiver, sw.elapsedMillis());
+            logger.info("query-{}: receive response from {} take time:{}", queryId, receiver, sw.elapsed(TimeUnit.MILLISECONDS));
             if (failedReceivers.containsKey(receiver)) {
                 failedReceivers.remove(receiver);
             }

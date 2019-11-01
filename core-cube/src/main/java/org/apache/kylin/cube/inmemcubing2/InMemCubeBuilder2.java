@@ -29,6 +29,7 @@ import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.kylin.common.util.Dictionary;
@@ -284,7 +285,7 @@ public class InMemCubeBuilder2 extends AbstractInMemCubeBuilder {
             MemoryBudgetController.MemoryWaterLevel baseCuboidMemTracker) throws IOException {
         logger.info("Calculating base cuboid {}", baseCuboidId);
 
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         GridTable baseCuboid = newGridTableByCuboidID(baseCuboidId);
         GTBuilder baseBuilder = baseCuboid.rebuild();
@@ -310,13 +311,13 @@ public class InMemCubeBuilder2 extends AbstractInMemCubeBuilder {
             baseBuilder.close();
 
             sw.stop();
-            logger.info("Cuboid {} has {} rows, build takes {}ms", baseCuboidId, count, sw.elapsedMillis());
+            logger.info("Cuboid {} has {} rows, build takes {}ms", baseCuboidId, count, sw.elapsed(TimeUnit.MILLISECONDS));
 
             int mbEstimateBaseAggrCache = (int) (aggregationScanner.getEstimateSizeOfAggrCache()
                     / MemoryBudgetController.ONE_MB);
             logger.info("Wild estimate of base aggr cache is {} MB", mbEstimateBaseAggrCache);
 
-            return updateCuboidResult(baseCuboidId, baseCuboid, count, sw.elapsedMillis(), 0,
+            return updateCuboidResult(baseCuboidId, baseCuboid, count, sw.elapsed(TimeUnit.MILLISECONDS), 0,
                     input.inputConverterUnit.ifChange());
         }
     }
@@ -376,7 +377,7 @@ public class InMemCubeBuilder2 extends AbstractInMemCubeBuilder {
 
     protected CuboidResult scanAndAggregateGridTable(GridTable gridTable, GridTable newGridTable, long parentId,
             long cuboidId, ImmutableBitSet aggregationColumns, ImmutableBitSet measureColumns) throws IOException {
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         logger.info("Calculating cuboid {}", cuboidId);
 
@@ -402,8 +403,8 @@ public class InMemCubeBuilder2 extends AbstractInMemCubeBuilder {
             builder.close();
         }
         sw.stop();
-        logger.info("Cuboid {} has {} rows, build takes {}ms", cuboidId, count, sw.elapsedMillis());
+        logger.info("Cuboid {} has {} rows, build takes {}ms", cuboidId, count, sw.elapsed(TimeUnit.MILLISECONDS));
 
-        return updateCuboidResult(cuboidId, newGridTable, count, sw.elapsedMillis(), 0);
+        return updateCuboidResult(cuboidId, newGridTable, count, sw.elapsed(TimeUnit.MILLISECONDS), 0);
     }
 }

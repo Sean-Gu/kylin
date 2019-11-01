@@ -84,7 +84,7 @@
 
     <property>
         <name>mapreduce.map.java.opts</name>
-        <value>-Xmx350m</value>
+        <value>-Xmx350m -verbose:class</value>
     </property>
 
     <property>

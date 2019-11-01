@@ -110,6 +110,10 @@
                     <groupId>javax.servlet.jsp</groupId>
                     <artifactId>jsp-api</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-runner</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -267,7 +271,7 @@
 
         <!--
            The Hadoop provided guava could disappoint calcite's demand.
-           E.g. the provided could be: /usr/hdp/2.4.0.0-169/hadoop/lib/guava-11.0.2.jar - com/google/common/collect/ImmutableSortedMap.class
+           E.g. the provided could be: /usr/hdp/3.1.0.0-78/hadoop/lib/guava-11.0.2.jar - com/google/common/collect/ImmutableSortedMap.class
            While calcite requires guava 14.0 now.
         -->
         <dependency>

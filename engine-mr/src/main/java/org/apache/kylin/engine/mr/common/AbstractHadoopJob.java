@@ -226,7 +226,7 @@ public abstract class AbstractHadoopJob extends Configured implements Tool {
 
             jobConf.set(MAP_REDUCE_CLASSPATH, classpath);
         }
-        logger.trace("Hadoop job classpath is: " + job.getConfiguration().get(MAP_REDUCE_CLASSPATH));
+        logger.trace("Hadoop job classpath is: " + (job.getConfiguration().get(MAP_REDUCE_CLASSPATH)));
 
         /*
          *  set extra dependencies as tmpjars & tmpfiles if configured

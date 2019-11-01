@@ -94,7 +94,7 @@ public class StreamingSegmentManagerTest extends LocalFileMetadataTestCase {
     public void testAddEventAndScan() {
         int eventNum = 80000;
         long time = DateFormat.stringToMillis("2018-07-30 20:00:00");
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         StreamingDataSimulator simulator = new StreamingDataSimulator();
         Iterator<StreamingMessage> messageIterator = simulator.simulate(eventNum, time);

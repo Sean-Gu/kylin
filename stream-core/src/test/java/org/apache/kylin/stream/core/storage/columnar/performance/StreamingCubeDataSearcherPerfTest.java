@@ -21,6 +21,7 @@ package org.apache.kylin.stream.core.storage.columnar.performance;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.kylin.common.KylinConfig;
@@ -95,7 +96,7 @@ public class StreamingCubeDataSearcherPerfTest extends LocalFileMetadataTestCase
 
     private void search(int time) throws IOException {
         System.out.println("start " + time + " search");
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         Set<TblColRef> dimensions = testHelper.simulateDimensions("STREAMING_V2_TABLE.MINUTE_START");
         Set<TblColRef> groups = testHelper.simulateDimensions();
@@ -111,13 +112,13 @@ public class StreamingCubeDataSearcherPerfTest extends LocalFileMetadataTestCase
             System.out.println(record);
         }
         sw.stop();
-        long takeTime = sw.elapsedMillis();
+        long takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
         System.out.println(time + " search finished, took:" + takeTime);
     }
 
     private void iiSearch(int time) throws IOException {
         System.out.println("start " + time + " invertIndex search");
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         Set<TblColRef> dimensions = testHelper.simulateDimensions("STREAMING_V2_TABLE.MINUTE_START",
                 "STREAMING_V2_TABLE.ITM");
@@ -136,7 +137,7 @@ public class StreamingCubeDataSearcherPerfTest extends LocalFileMetadataTestCase
             System.out.println(record);
         }
         sw.stop();
-        long takeTime = sw.elapsedMillis();
+        long takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
         System.out.println(time + " search finished, took:" + takeTime);
     }
 
@@ -151,7 +152,7 @@ public class StreamingCubeDataSearcherPerfTest extends LocalFileMetadataTestCase
 
     private void scan(int time) throws IOException {
         System.out.println("start " + time + " scan");
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         Set<TblColRef> dimensions = testHelper.simulateDimensions("STREAMING_V2_TABLE.SITE");
         Set<TblColRef> groups = testHelper.simulateDimensions();
@@ -168,7 +169,7 @@ public class StreamingCubeDataSearcherPerfTest extends LocalFileMetadataTestCase
             scanRowCnt++;
         }
         sw.stop();
-        long takeTime = sw.elapsedMillis();
+        long takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
         System.out.println(time + " search finished, scan row cnt:" + scanRowCnt + ", took:" + takeTime
                 + ",numRowsPerSec:" + scanRowCnt * 1000 / takeTime);
     }

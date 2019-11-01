@@ -20,6 +20,7 @@ package org.apache.kylin.stream.server.rest.controller;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.kylin.common.KylinConfig;
@@ -80,7 +81,7 @@ public class DataController extends BasicController {
         StreamingQueryProfile.set(queryProfile);
         logger.info("receive query request queryId:{}", queryId);
         try {
-            final Stopwatch sw = new Stopwatch();
+            final Stopwatch sw = Stopwatch.createUnstarted();
             sw.start();
             String cubeName = dataRequest.getCubeName();
             long minSegmentTime = dataRequest.getMinSegmentTime();
@@ -121,7 +122,7 @@ public class DataController extends BasicController {
             DataResponse dataResponse = new DataResponse();
             dataResponse.setData(Base64.encodeBase64String(serializedRowsInfo.getFirst()));
             sw.stop();
-            logger.info("query-{}: return response, took {} ms", queryId, sw.elapsedMillis());
+            logger.info("query-{}: return response, took {} ms", queryId, sw.elapsed(TimeUnit.MILLISECONDS));
             long finalCnt = serializedRowsInfo.getSecond();
             queryProfile.setFinalRows(finalCnt);
             String profileInfo = queryProfile.toString();

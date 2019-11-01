@@ -242,7 +242,7 @@ public class TrieDictionaryTest {
         TrieDictionary<String> dict = b.build(0);
         System.out.println("Dictionary size for file " + file + " is " + dict.getSize());
 
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createStarted();
         sw.start();
         List<String> values1 = dict.enumeratorValuesByParent();
         System.out.println("By iterating id visit the time cost " + sw.elapsed(TimeUnit.MILLISECONDS) + " ms");

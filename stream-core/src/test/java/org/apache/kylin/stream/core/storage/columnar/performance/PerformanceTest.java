@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.kylin.common.KylinConfig;
@@ -79,13 +80,13 @@ public class PerformanceTest extends LocalFileMetadataTestCase {
         long time = System.currentTimeMillis();
         int rowCnt = 10000000;
         Iterator<StreamingMessage> messageItr = simulator.simulate(rowCnt, time);
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.createUnstarted();
         sw.start();
         while (messageItr.hasNext()) {
             StreamingMessage message = messageItr.next();
             cubeDataStore.addEvent(message);
         }
-        long takeTime = sw.elapsedMillis();
+        long takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
         System.out.println("Index took:" + takeTime + ",qps:" + rowCnt / (takeTime / 1000));
         sw.reset();
 
@@ -103,7 +104,7 @@ public class PerformanceTest extends LocalFileMetadataTestCase {
                 rowNum++;
             }
 
-            takeTime = sw.elapsedMillis();
+            takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
             System.out.println("scan finished, total rows:" + rowNum);
             System.out.println("first scan took:" + takeTime + ",rowsPerSec:" + (rowNum / takeTime) * 1000);
 
@@ -117,7 +118,7 @@ public class PerformanceTest extends LocalFileMetadataTestCase {
                 rowNum++;
             }
 
-            takeTime = sw.elapsedMillis();
+            takeTime = sw.elapsed(TimeUnit.MILLISECONDS);
             System.out.println("total rows:" + rowNum);
             System.out.println("second scan took:" + takeTime + ",rowsPerSec:" + (rowNum / takeTime) * 1000);
         } catch (IOException e) {

@@ -21,6 +21,7 @@ package org.apache.kylin.rest;
 import org.apache.catalina.Context;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.core.StandardServer;
+
 import org.apache.catalina.deploy.ErrorPage;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.io.FileUtils;
@@ -28,6 +29,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.util.Shell;
 import org.apache.kylin.common.KylinConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +38,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class DebugTomcat {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DebugTomcat.class);
 
     public static void setupDebugEnv() {
         try {
             System.setProperty("HADOOP_USER_NAME", "root");
-            System.setProperty("log4j.configuration", "file:../build/conf/kylin-tools-log4j.properties");
+            System.setProperty("log4j2.configurationFile", "file:../build/conf/kylin-tools-log4j.properties");
 
             // test_case_data/sandbox/ contains HDP 2.2 site xmls which is dev sandbox
             KylinConfig.setSandboxEnvIfPossible();
@@ -56,7 +60,7 @@ public class DebugTomcat {
                 System.setProperty("catalina.home", ".");
 
             if (StringUtils.isEmpty(System.getProperty("hdp.version"))) {
-                System.setProperty("hdp.version", "2.4.0.0-169");
+                System.setProperty("hdp.version", "3.1.0.0-78");
             }
 
             // workaround for job submission from win to linux -- https://issues.apache.org/jira/browse/MAPREDUCE-4052
