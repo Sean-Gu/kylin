@@ -27,6 +27,11 @@
     </property>
 
     <property>
+        <name>mapreduce.job.user.classpath.first</name>
+        <value>true</value>
+    </property>
+
+    <property>
         <name>mapreduce.map.maxattempts</name>
         <value>2</value>
     </property>
@@ -84,7 +89,7 @@
 
     <property>
         <name>mapreduce.map.java.opts</name>
-        <value>-Xmx350m -verbose:class</value>
+        <value>-Xmx350m -verbose:class -Djava.library.path=$JAVA_LIBRARY_PATH:/usr/hdp/3.1.0.0-78/hadoop/lib/native</value>
     </property>
 
     <property>
@@ -99,7 +104,7 @@
 
     <property>
         <name>mapreduce.reduce.java.opts</name>
-        <value>-Xmx350m</value>
+        <value>-Xmx350m -Djava.library.path=$JAVA_LIBRARY_PATH:/usr/hdp/3.1.0.0-78/hadoop/lib/native</value>
     </property>
 
 </configuration>
